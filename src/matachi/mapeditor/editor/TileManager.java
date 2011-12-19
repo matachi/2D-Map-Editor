@@ -4,32 +4,49 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 
 public class TileManager {
 
 	ArrayList<Tile> tiles;
-
-	/**
-	 * The image files to the tiles.
-	 */
-	private BufferedImage groundImage = null;
-	private BufferedImage skyImage = null;
 	
-	
-	public TileManager() {
+	public TileManager(final String folderPath) {
+		
 		tiles = new ArrayList<Tile>();
 
-		/** Initialize the image icons. */
-		try {
-			groundImage = ImageIO.read(new File("data/groundIcon.png"));
-			skyImage = ImageIO.read(new File("data/skyIcon.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
+		File folder = new File(folderPath);
+		File[] listOfFiles = folder.listFiles();
+		
+		int character = 48;
+		
+		for (File f : listOfFiles) {
+			BufferedImage icon = null;
+			try {
+				icon = ImageIO.read(f);
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.exit(0);
+			}
+			tiles.add(new Tile(icon, (char)character++));
+			System.out.println((char)character);
 		}
+		
+//		for (int i = 0; i < 1000; i++) {
+//			System.out.println(i + ". " + (char)i);
+//		}
+	}
 
-		tiles.add(new Tile(skyImage, '0'));
-		tiles.add(new Tile(groundImage, '1'));
+	public Tile get(final int index) {
+		return tiles.get(index);
+	}
+
+	public int size() {
+		return tiles.size();
+	}
+
+	public Iterator<Tile> iterator() {
+		return tiles.iterator();
 	}
 }

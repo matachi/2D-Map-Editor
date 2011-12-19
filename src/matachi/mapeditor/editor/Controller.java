@@ -52,6 +52,10 @@ public class Controller implements MouseListener, MouseMotionListener, ActionLis
 	 * Construct the controller.
 	 */
 	public Controller() {
+		
+		TileManager tile = new TileManager("data/");
+		System.out.println(tile.get(1));
+		
 		this.model = new GridModel(42, 30);
 		this.camera = new GridCamera(model, 32, 20);
 		this.view = new View(this, model);
