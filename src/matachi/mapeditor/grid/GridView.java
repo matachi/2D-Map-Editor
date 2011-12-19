@@ -48,6 +48,8 @@ public class GridView extends JPanel implements PropertyChangeListener {
 		
 		this.camera = new GridCamera(grid, x, y);
 		GridController controller = new GridController(this, grid, camera);
+		this.addMouseListener(controller);
+		this.addMouseMotionListener(controller);
 		
 		/** Initialize the image icons. */
 		try {
