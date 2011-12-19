@@ -9,6 +9,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -53,8 +55,9 @@ public class Controller implements MouseListener, MouseMotionListener, ActionLis
 	 */
 	public Controller() {
 		
-		TileManager tile = new TileManager("data/");
-		System.out.println(tile.get(1));
+//		TileManager tiles = new TileManager("data/");
+		
+		List<Tile> tiles = TileManager.getTilesFromFolder("data/");
 		
 		this.model = new GridModel(42, 30);
 		this.camera = new GridCamera(model, 32, 20);
