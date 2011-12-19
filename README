@@ -1,0 +1,5 @@
+A map editor written in Java for 2D games. It's meant to be used to generate
+text files with characters building up a tile based 2D game.
+
+Author: Daniel "MaTachi" Jonsson
+Date: 3 December 2011
