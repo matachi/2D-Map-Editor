@@ -16,11 +16,6 @@ import matachi.mapeditor.editor.Tile;
 public class GridView extends JPanel implements PropertyChangeListener {
 
 	private static final long serialVersionUID = -345930170664066299L;
-
-	public static final int NORTH = 0;
-	public static final int EAST = 1;
-	public static final int SOUTH = 2;
-	public static final int WEST = 3;
 	
 	/**
 	 * A reference to the model. Needed to query data.

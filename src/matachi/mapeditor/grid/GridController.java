@@ -157,13 +157,13 @@ public class GridController implements MouseListener, MouseMotionListener, Actio
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			camera.moveCamera(GridView.NORTH);
+			camera.moveCamera(GridCamera.NORTH);
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			camera.moveCamera(GridView.EAST);
+			camera.moveCamera(GridCamera.EAST);
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			camera.moveCamera(GridView.SOUTH);
+			camera.moveCamera(GridCamera.SOUTH);
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			camera.moveCamera(GridView.WEST);
+			camera.moveCamera(GridCamera.WEST);
 		}
 	}
 
