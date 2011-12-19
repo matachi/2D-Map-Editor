@@ -58,9 +58,9 @@ public class GridView extends JPanel implements PropertyChangeListener {
 		}
 		
 		/** Add all tiles to the grid. */
-		map = new Tile[20][32];
-		for (int y_ = 0; y_ < 20; y_++) {
-			for (int x_ = 0; x_ < 32; x_++) {
+		map = new Tile[y][x];
+		for (int y_ = 0; y_ < y; y_++) {
+			for (int x_ = 0; x_ < x; x_++) {
 				map[y_][x_] = new Tile(skyImage, '0');
 				map[y_][x_].getIcon().addKeyListener(controller);
 				map[y_][x_].getIcon().setFocusable(true);
