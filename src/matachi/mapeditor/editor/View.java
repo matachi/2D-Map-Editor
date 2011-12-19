@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -65,13 +66,13 @@ public class View implements PropertyChangeListener {
 	 * @param controller The controller.
 	 * @param model The model.
 	 */
-	public View(Controller controller, Grid gridModel) {
+	public View(Controller controller, Grid gridModel, List<? extends Tile> tiles) {
 		
 		drawingMode = true;
 		showingGrid = true;
 		this.camera = camera;
 		
-		JPanel grid = new GridView(gridModel, 32, 20); // Every tile is 30x30 pixels
+		JPanel grid = new GridView(gridModel, 32, 20, tiles); // Every tile is 30x30 pixels
 		grid.setPreferredSize(new Dimension(960, 600));
 		grid.addMouseListener(controller);
 		grid.addMouseMotionListener(controller);

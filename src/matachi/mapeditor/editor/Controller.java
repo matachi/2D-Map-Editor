@@ -61,7 +61,7 @@ public class Controller implements MouseListener, MouseMotionListener, ActionLis
 		
 		this.model = new GridModel(42, 30);
 		this.camera = new GridCamera(model, 32, 20);
-		this.view = new View(this, model);
+		this.view = new View(this, model, tiles);
 		this.camera.addPropertyChangeListener(view);
 		this.model.addPropertyChangeListener(view);
 		this.drawingMode = true;

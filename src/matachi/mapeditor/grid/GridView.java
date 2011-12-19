@@ -7,6 +7,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -38,7 +39,7 @@ public class GridView extends JPanel implements PropertyChangeListener {
 	 * @param controller
 	 * @param camera
 	 */
-	public GridView(Grid grid, final int x, final int y) {
+	public GridView(Grid grid, final int x, final int y, List<? extends Tile> tiles) {
 		super(new GridLayout(y, x));
 		
 		this.camera = new GridCamera(grid, x, y);
