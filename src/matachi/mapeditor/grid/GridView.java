@@ -16,11 +16,6 @@ import matachi.mapeditor.editor.Tile;
 public class GridView extends JPanel implements PropertyChangeListener {
 
 	private static final long serialVersionUID = -345930170664066299L;
-
-	public static final int NORTH = 0;
-	public static final int EAST = 1;
-	public static final int SOUTH = 2;
-	public static final int WEST = 3;
 	
 	/**
 	 * A reference to the model. Needed to query data.
@@ -48,6 +43,8 @@ public class GridView extends JPanel implements PropertyChangeListener {
 		
 		this.camera = new GridCamera(grid, x, y);
 		GridController controller = new GridController(this, grid, camera);
+		this.addMouseListener(controller);
+		this.addMouseMotionListener(controller);
 		
 		/** Initialize the image icons. */
 		try {
@@ -103,17 +100,4 @@ public class GridView extends JPanel implements PropertyChangeListener {
 			map[p.y][p.x].setIcon(groundImage);
 		}
 	}
-	
-	public void moveCamera(int direction) {
-		camera.moveCamera(direction);
-//		updateCameraPosition();
-	}
-	
-//	public void updateCameraPosition() {
-//		viewInformation.setText("Showing: " + camera.getX() + " - "
-//				+ (camera.getX() + camera.getWidth()) + "/"
-//				+ camera.getModelWidth() + ", " + camera.getY() + " - "
-//				+ (camera.getY() + camera.getHeight()) + "/"
-//				+ camera.getModelHeight());
-//	}
 }
