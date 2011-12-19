@@ -18,7 +18,6 @@ import javax.swing.border.Border;
 
 import matachi.mapeditor.grid.Camera;
 import matachi.mapeditor.grid.Grid;
-import matachi.mapeditor.grid.GridModel;
 import matachi.mapeditor.grid.GridView;
 
 public class View implements PropertyChangeListener {
@@ -72,7 +71,7 @@ public class View implements PropertyChangeListener {
 		showingGrid = true;
 		this.camera = camera;
 		
-		JPanel grid = new GridView(gridModel, 42, 30); // Every tile is 30x30 pixels
+		JPanel grid = new GridView(gridModel, 32, 20); // Every tile is 30x30 pixels
 		grid.setPreferredSize(new Dimension(960, 600));
 		grid.addMouseListener(controller);
 		grid.addMouseMotionListener(controller);
