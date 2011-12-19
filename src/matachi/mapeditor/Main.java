@@ -3,7 +3,6 @@ package matachi.mapeditor;
 import matachi.mapeditor.editor.Controller;
 
 public class Main {
-
 	public static void main(String[] args) {
 //		try {
 //			// Set cross-platform Java L&F (also called "Metal")
@@ -20,5 +19,8 @@ public class Main {
 //			// handle exception
 //		}
 		new Controller();
+		/**
+			Roooligt 
+			*/
 	}
 }
