@@ -12,6 +12,10 @@ public class TileManager {
 
 	ArrayList<Tile> tiles;
 	
+	/**
+	 * Constructs a TileManager and load it with images from folderPath.
+	 * @param folderPath Path to image folder.
+	 */
 	public TileManager(final String folderPath) {
 		
 		tiles = new ArrayList<Tile>();
@@ -38,14 +42,27 @@ public class TileManager {
 //		}
 	}
 
+	/**
+	 * Get Tile with index number x.
+	 * @param index Index number.
+	 * @return Tile The Tile.
+	 */
 	public Tile get(final int index) {
 		return tiles.get(index);
 	}
 
+	/**
+	 * The amount of Tiles in the TileManager.
+	 * @return int Size of TileManager.
+	 */
 	public int size() {
 		return tiles.size();
 	}
 
+	/**
+	 * Iterator.
+	 * @return Iterator<Tile> Iterator.
+	 */
 	public Iterator<Tile> iterator() {
 		return tiles.iterator();
 	}
