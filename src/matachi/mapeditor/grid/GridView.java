@@ -105,17 +105,4 @@ public class GridView extends JPanel implements PropertyChangeListener {
 			map[p.y][p.x].setIcon(groundImage);
 		}
 	}
-	
-	public void moveCamera(int direction) {
-		camera.moveCamera(direction);
-//		updateCameraPosition();
-	}
-	
-//	public void updateCameraPosition() {
-//		viewInformation.setText("Showing: " + camera.getX() + " - "
-//				+ (camera.getX() + camera.getWidth()) + "/"
-//				+ camera.getModelWidth() + ", " + camera.getY() + " - "
-//				+ (camera.getY() + camera.getHeight()) + "/"
-//				+ camera.getModelHeight());
-//	}
 }
