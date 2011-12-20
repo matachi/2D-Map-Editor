@@ -3,35 +3,22 @@ package matachi.mapeditor.editor;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
-import matachi.mapeditor.grid.Camera;
 import matachi.mapeditor.grid.Grid;
 import matachi.mapeditor.grid.GridView;
 
 public class View implements PropertyChangeListener {
-	
-	public static final int NORTH = 0;
-	public static final int EAST = 1;
-	public static final int SOUTH = 2;
-	public static final int WEST = 3;
-	
-	/**
-	 * A reference to the model. Needed to query data.
-	 */
-	private Camera camera;
 	
 	/**
 	 * The JFrame.
@@ -59,9 +46,8 @@ public class View implements PropertyChangeListener {
 		
 		drawingMode = true;
 		showingGrid = true;
-		this.camera = camera;
 		
-		JPanel grid = new GridView(gridModel, 32, 20, tiles); // Every tile is 30x30 pixels
+		JPanel grid = new GridView(controller, gridModel, 32, 20, tiles); // Every tile is 30x30 pixels
 		grid.setPreferredSize(new Dimension(960, 600));
 		grid.addMouseListener(controller);
 		grid.addMouseMotionListener(controller);

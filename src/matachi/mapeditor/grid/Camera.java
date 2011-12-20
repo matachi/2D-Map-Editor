@@ -3,6 +3,13 @@ package matachi.mapeditor.grid;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeListener;
 
+/**
+ * A camera interface. A camera uses a grid and shows only a rectangle of it.
+ * @author Daniel "MaTachi" Jonsson
+ * @version 1
+ * @since v0.0.5
+ *
+ */
 public interface Camera {
 
 	/**

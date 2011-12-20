@@ -2,6 +2,13 @@ package matachi.mapeditor.grid;
 
 import java.beans.PropertyChangeListener;
 
+/**
+ * An interface for a class that stores tiles as characters in a two dimensions.
+ * @author Daniel "MaTachi" Jonsson
+ * @version 1
+ * @since v0.0.5
+ *
+ */
 public interface Grid {
 	
 	/**

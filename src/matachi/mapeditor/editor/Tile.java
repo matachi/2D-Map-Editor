@@ -11,6 +11,14 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+/**
+ * A class that holds a image, and a character that will be written to the
+ * map file.
+ * @author Daniel "MaTachi" Jonsson
+ * @version 1
+ * @since v0.0.5
+ *
+ */
 public class Tile {
 
 	/**

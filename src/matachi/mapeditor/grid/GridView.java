@@ -10,8 +10,16 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import matachi.mapeditor.editor.GUIInformation;
 import matachi.mapeditor.editor.Tile;
 
+/**
+ * A class which shows a Grid graphically as a JPanel.
+ * @author Daniel "MaTachi" Jonsson
+ * @version 1
+ * @since v0.0.5
+ *
+ */
 public class GridView extends JPanel implements PropertyChangeListener {
 
 	private static final long serialVersionUID = -345930170664066299L;
@@ -26,31 +34,38 @@ public class GridView extends JPanel implements PropertyChangeListener {
 	 */
 	private GridTile[][] map;
 	
+	/**
+	 * Available tiles.
+	 */
 	private List<? extends Tile> tiles;
 	
 	/**
-	 * 
-	 * @param controller
-	 * @param camera
+	 * Creates a grid panel.
+	 * @param guiInformation Information from the GUI that the grid requires.
+	 * @param grid The grid that should be represented graphically in the GridView.
+	 * @param width The width of the GridView in number of tiles.
+	 * @param height The height of the GridView in number of tiles.
+	 * @param tiles List of available tiles.
 	 */
-	public GridView(Grid grid, final int x, final int y, List<? extends Tile> tiles) {
-		super(new GridLayout(y, x));
+	public GridView(GUIInformation guiInformation, Grid grid, final int width, final int height, List<? extends Tile> tiles) {
+		super(new GridLayout(height, width));
 		
 		this.tiles = tiles;
 		
-		this.camera = new GridCamera(grid, x, y);
-		GridController controller = new GridController(this, grid, camera);
+		this.camera = new GridCamera(grid, width, height);
+		this.camera.addPropertyChangeListener(this);
+		GridController controller = new GridController(camera, guiInformation);
 		this.addMouseListener(controller);
 		this.addMouseMotionListener(controller);
 		
 		/** Add all tiles to the grid. */
-		map = new GridTile[y][x];
-		for (int y_ = 0; y_ < y; y_++) {
-			for (int x_ = 0; x_ < x; x_++) {
-				map[y_][x_] = new GridTile(tiles.get(0));
-				map[y_][x_].addKeyListener(controller);
-				map[y_][x_].setFocusable(true);
-				this.add(map[y_][x_]);
+		map = new GridTile[height][width];
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				map[y][x] = new GridTile(tiles.get(0));
+				map[y][x].addKeyListener(controller);
+				map[y][x].setFocusable(true);
+				this.add(map[y][x]);
 			}
 		}
 	}
@@ -67,6 +82,9 @@ public class GridView extends JPanel implements PropertyChangeListener {
 		}
 	}
 	
+	/**
+	 * Redraw the whole grid.
+	 */
 	private void redrawGrid() {
 		for (int y = 0; y < 20; y++) {
 			for (int x = 0; x < 32; x++) {
@@ -79,24 +97,30 @@ public class GridView extends JPanel implements PropertyChangeListener {
 			}
 		}
 		this.repaint();
-//		frame.pack();
 	}
 	
-	private void redrawTile(Point p) {
+	/**
+	 * Redraw a single tile.
+	 * @param position The tile's position in the grid.
+	 */
+	private void redrawTile(Point position) {
 		for (Tile t : tiles) {
-			if (camera.getTile(p.x, p.y) == t.getCharacter()) {
-				map[p.y][p.x].setTile(t);
+			if (camera.getTile(position.x, position.y) == t.getCharacter()) {
+				map[position.y][position.x].setTile(t);
 			}
 		}
 	}
 	
+	/**
+	 * How the tiles are represented graphically.
+	 */
 	private class GridTile extends JPanel {
 		
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 8127828009105626334L;
 		
+		/**
+		 * The tile that the GridTile should show.
+		 */
 		private Tile tile;
 		
 		/**
@@ -108,37 +132,14 @@ public class GridView extends JPanel implements PropertyChangeListener {
 			this.tile = tile;
 		}
 
+		/**
+		 * Give the JPanel GridTile a new tile that it should show.
+		 * @param tile
+		 */
 		public void setTile(Tile tile) {
 			this.tile = tile;
 			this.repaint();
 		}
-
-//		public JPanel getIcon() {
-////			return (JPanel) icon.clone();
-//			return icon;
-//		}
-//		
-//		/**
-//		 * Change the icon.
-//		 * @param icon The new icon.
-//		 */
-//		public void setIcon(BufferedImage icon) {
-//			this.icon.icon = icon;
-//			this.icon.repaint();
-//		}
-//
-//		public void flipGrid() {
-//			this.icon.showingGrid = !this.icon.showingGrid;
-//			this.icon.repaint();
-//		}
-//		
-//		public char getCharacter() {
-//			return character;
-//		}
-//
-//		public void setCharacter(char character) {
-//			this.character = character;
-//		}
 
 		@Override
 		public void paintComponent(Graphics g) {

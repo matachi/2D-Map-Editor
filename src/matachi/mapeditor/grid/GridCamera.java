@@ -5,6 +5,14 @@ import java.awt.Rectangle;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+/**
+ * An implementation of the interface Camera. It has a Grid and shows only a
+ * rectangle of it.
+ * @author Daniel "MaTachi" Jonsson
+ * @version 1
+ * @since v0.0.5
+ *
+ */
 public class GridCamera implements Camera {
 
 	public static final int NORTH = 0;

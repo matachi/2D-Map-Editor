@@ -3,6 +3,14 @@ package matachi.mapeditor.grid;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+/**
+ * An implementation of the interface Grid. It stores characters two
+ * dimensionally.
+ * @author Daniel "MaTachi" Jonsson
+ * @version 1
+ * @since v0.0.5
+ *
+ */
 public class GridModel implements Grid {
 
 	public static final int NORTH = 0;
@@ -28,7 +36,6 @@ public class GridModel implements Grid {
 	public GridModel(int columns, int rows) {
 		changeSupport = new PropertyChangeSupport(this);
 		map = createEmptyMap(columns, rows);
-//		firePropertyChange();
 	}
 
 	/**
@@ -140,7 +147,7 @@ public class GridModel implements Grid {
 	 * Returns a new map filled with zeros.
 	 * @param columns The number of columns.
 	 * @param rows The number of rows.
-	 * @return A 2D array of characters (zeros).
+	 * @return char[][] A 2D array of characters (zeros).
 	 */
 	private char[][] createEmptyMap(int columns, int rows) {
 		char[][] tmpMap = new char[rows][columns];
