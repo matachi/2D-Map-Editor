@@ -1,12 +1,8 @@
 package matachi.mapeditor.editor;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 
 public class TileManager {
 
@@ -25,14 +21,7 @@ public class TileManager {
 		int character = 48;
 		
 		for (File f : listOfFiles) {
-			BufferedImage icon = null;
-			try {
-				icon = ImageIO.read(f);
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.exit(0);
-			}
-			tiles.add(new Tile(icon, (char)character++));
+			tiles.add(new Tile(f.getPath(), (char)character++));
 		}
 		
 		return tiles;

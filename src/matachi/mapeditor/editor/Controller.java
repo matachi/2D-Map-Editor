@@ -156,7 +156,7 @@ public class Controller implements MouseListener, MouseMotionListener, ActionLis
 		} else if (e.getActionCommand().equals("ground")) {
 			curTile = 1;
 		} else if (e.getActionCommand().equals("flipGrid")) {
-			view.flipGrid();
+//			view.flipGrid();
 		} else if (e.getActionCommand().equals("flipDraw")) {
 			drawingMode = !drawingMode;
 			view.flipDraw();

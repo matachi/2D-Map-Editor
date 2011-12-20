@@ -39,17 +39,6 @@ public class View implements PropertyChangeListener {
 	private JFrame frame;
 	
 	/**
-	 * References to all tiles.
-	 */
-	private Tile[][] map;
-	
-	/**
-	 * The image files to the tiles.
-	 */
-	private BufferedImage groundImage = null;
-	private BufferedImage skyImage = null;
-	
-	/**
 	 * Settings to the right.
 	 */
 	private JButton showGridButton;
@@ -78,21 +67,15 @@ public class View implements PropertyChangeListener {
 		grid.addMouseMotionListener(controller);
 		
 		/** Create the bottom panel. */
-		JButton airButton = new JButton();
-		airButton.setPreferredSize(new Dimension(30, 30));
-		airButton.setIcon(new ImageIcon("data/skyIcon.png"));
-		airButton.addActionListener(controller);
-		airButton.setActionCommand("sky");
-		
-		JButton groundButton = new JButton();
-		groundButton.setPreferredSize(new Dimension(30, 30));
-		groundButton.setIcon(new ImageIcon("data/groundIcon.png"));
-		groundButton.addActionListener(controller);
-		groundButton.setActionCommand("ground");
-		
 		JPanel palette = new JPanel(new FlowLayout());
-		palette.add(airButton);
-		palette.add(groundButton);
+		for (Tile t : tiles) {
+			JButton button = new JButton();
+			button.setPreferredSize(new Dimension(30, 30));
+			button.setIcon(t.getIcon());
+			button.addActionListener(controller);
+			button.setActionCommand(Character.toString(t.getCharacter()));
+			palette.add(button);
+		}
 		
 		/** Create the right panel. */
 		showGridButton = new JButton("Hide grid");
@@ -148,28 +131,28 @@ public class View implements PropertyChangeListener {
 		frame.setVisible(true);
 	}
 	
-	/**
-	 * Flip the grid on or off.
-	 */
-	public void flipGrid() {
-		this.showingGrid = !this.showingGrid;
-		if (!showingGrid) {
-			showGridButton.setText("Show grid");
-			for (int y = 0; y < 20; y++) {
-				for (int x = 0; x < 32; x++) {
-					map[y][x].flipGrid();
-				}
-			}
-		} else {
-			showGridButton.setText("Hide grid");
-			for (int y = 0; y < 20; y++) {
-				for (int x = 0; x < 32; x++) {
-					map[y][x].flipGrid();
-				}
-			}
-		}
-		frame.repaint();
-	}
+//	/**
+//	 * Flip the grid on or off.
+//	 */
+//	public void flipGrid() {
+//		this.showingGrid = !this.showingGrid;
+//		if (!showingGrid) {
+//			showGridButton.setText("Show grid");
+//			for (int y = 0; y < 20; y++) {
+//				for (int x = 0; x < 32; x++) {
+//					map[y][x].flipGrid();
+//				}
+//			}
+//		} else {
+//			showGridButton.setText("Hide grid");
+//			for (int y = 0; y < 20; y++) {
+//				for (int x = 0; x < 32; x++) {
+//					map[y][x].flipGrid();
+//				}
+//			}
+//		}
+//		frame.repaint();
+//	}
 	
 	/**
 	 * Change the button that indicates if the drawing mode is on or off.
@@ -185,14 +168,6 @@ public class View implements PropertyChangeListener {
 	
 	public void updateMousePosition(int x, int y) {
 		mousePosition.setText("Mouse: (" + x + ", " + y + "), Hovering tile: (" + (x/30+1) + ", " + (y/30+1) + ")");
-	}
-	
-	public void updateCameraPosition() {
-		viewInformation.setText("Showing: " + camera.getX() + " - "
-				+ (camera.getX() + camera.getWidth()) + "/"
-				+ camera.getModelWidth() + ", " + camera.getY() + " - "
-				+ (camera.getY() + camera.getHeight()) + "/"
-				+ camera.getModelHeight());
 	}
 	
 	/**

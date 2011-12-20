@@ -1,8 +1,15 @@
 package matachi.mapeditor.editor;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 public class Tile {
 
@@ -12,26 +19,42 @@ public class Tile {
 	private char character;
 
 	/**
-	 * The icon that will be used in the editor.
+	 * The image that will be used in the editor.
 	 */
-	private BufferedImage icon;
+	private BufferedImage image;
 	
 	/**
 	 * Construct a tile.
-	 * @param icon The icon of the tile.
+	 * @param filePath The path to the file.
 	 * @param character The character that will represent the tile when saved.
 	 */
-	public Tile(final BufferedImage icon, final char character) {
-		this.icon = deepCopy(icon);
+	public Tile(final String filePath, final char character) {
+		try {
+			image = ImageIO.read(new File(filePath));
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.err.println(e.getMessage());
+			System.err.println("Bad file path: " + filePath);
+			System.exit(0);
+		}
 		this.character = character;
 	}
 
 	/**
-	 * Get the icon.
-	 * @return BufferedImage The tile icon.
+	 * Get the tile as a image.
+	 * @return Image The tile icon.
 	 */
-	public BufferedImage getIcon() {
-		return deepCopy(icon);
+	public Image getImage() {
+		return deepCopy(image);
+	}
+
+
+	/**
+	 * Get the tile as a icon.
+	 * @return Icon The tile icon.
+	 */
+	public Icon getIcon() {
+		return new ImageIcon(image);
 	}
 	
 	/**
