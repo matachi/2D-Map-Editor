@@ -18,6 +18,13 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import matachi.mapeditor.grid.Grid;
 import matachi.mapeditor.grid.GridModel;
 
+/**
+ * Controller of the application.
+ * @author Daniel "MaTachi" Jonsson
+ * @version 1
+ * @since v0.0.5
+ *
+ */
 public class Controller implements MouseListener, MouseMotionListener, ActionListener, KeyListener, GUIInformation {
 
 	/**

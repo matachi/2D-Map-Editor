@@ -18,6 +18,13 @@ import javax.swing.border.Border;
 import matachi.mapeditor.grid.Grid;
 import matachi.mapeditor.grid.GridView;
 
+/**
+ * The view of the application.
+ * @author Daniel "MaTachi" Jonsson
+ * @version 1
+ * @since v0.0.5
+ *
+ */
 public class View implements PropertyChangeListener {
 	
 	/**
