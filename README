@@ -2,6 +2,16 @@ A map editor written in Java for 2D games. It's meant to be used to generate
 text files with characters building up a tile based 2D game.
 
 
+How to use the application
+
+	Select which tile that should be painted from the palette from the bottom of
+	the application.
+	Moving the mouse holding down the left mouse button will pain the selected
+	tile.
+	Holding gown the right mouse button instead will move the camera.
+	Using the arrow keys will also move the camera.
+
+
 How to compile and run the application
 
 	Compile:
