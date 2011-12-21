@@ -6,10 +6,15 @@ How to use the application
 
 	Select which tile that should be painted from the palette from the bottom of
 	the application.
-	Moving the mouse holding down the left mouse button will pain the selected
+	Moving the mouse holding down the left mouse button will paint the selected
 	tile.
 	Holding gown the right mouse button instead will move the camera.
 	Using the arrow keys will also move the camera.
+	
+How to add additional tiles to the application
+
+	Put your additional image files into the data folder and restart the
+	application. Then they should appear by themselves in the app.
 
 
 How to compile and run the application
