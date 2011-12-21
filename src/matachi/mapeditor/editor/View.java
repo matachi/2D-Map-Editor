@@ -11,11 +11,12 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
+import matachi.mapeditor.grid.Camera;
 import matachi.mapeditor.grid.Grid;
+import matachi.mapeditor.grid.GridCamera;
 import matachi.mapeditor.grid.GridView;
 
 /**
@@ -37,10 +38,7 @@ public class View implements PropertyChangeListener {
 	 */
 	private JButton showGridButton;
 	
-	private boolean showingGrid;
-
-	private JLabel viewInformation;
-	private JLabel mousePosition;
+//	private boolean showingGrid;
 	
 	/**
 	 * Constructs the View.
@@ -49,12 +47,12 @@ public class View implements PropertyChangeListener {
 	 */
 	public View(Controller controller, Grid gridModel, List<? extends Tile> tiles) {
 		
-		showingGrid = true;
+//		showingGrid = true;
 		
-		JPanel grid = new GridView(controller, gridModel, 32, 20, tiles); // Every tile is 30x30 pixels
+		Camera camera = new GridCamera(gridModel, 32, 20);
+		
+		JPanel grid = new GridView(controller, camera, tiles); // Every tile is 30x30 pixels
 		grid.setPreferredSize(new Dimension(960, 600));
-		grid.addMouseListener(controller);
-		grid.addMouseMotionListener(controller);
 		
 		/** Create the bottom panel. */
 		JPanel palette = new JPanel(new FlowLayout());
@@ -84,19 +82,14 @@ public class View implements PropertyChangeListener {
 		right.add(saveButton);
 		
 		/** The top panel, that shows coordinates and stuff. */
-		viewInformation = new JLabel();
-//		viewInformation.setText("Showing: 0 - 32/" + camera.getWidth()
-//				+ ", 0 - 20/" + camera.getHeight());
-		viewInformation.setPreferredSize(new Dimension(220, 15));
-		viewInformation.setAlignmentX(JLabel.LEFT_ALIGNMENT);
-		
-		mousePosition = new JLabel();
-		
+		CameraInformationLabel cameraInformation = new CameraInformationLabel(camera);
+		GridMouseInformationLabel mouseInformation = new GridMouseInformationLabel(grid);
 		JPanel top = new JPanel();
 		top.setLayout(new FlowLayout(FlowLayout.LEFT));
 		top.setBorder(border);
-		top.add(viewInformation);
-		top.add(mousePosition);
+		top.add(cameraInformation);
+		top.add(mouseInformation);
+		
 		
 		JPanel layout = new JPanel(new BorderLayout());
 		JPanel test = new JPanel(new BorderLayout());
@@ -109,7 +102,6 @@ public class View implements PropertyChangeListener {
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("Map Editor");
-//		frame.setExtendedState(frame.NORMAL);
 		frame.add(layout);
 		frame.pack();
 		frame.setVisible(true);
@@ -137,10 +129,6 @@ public class View implements PropertyChangeListener {
 //		}
 //		frame.repaint();
 //	}
-	
-	public void updateMousePosition(int x, int y) {
-		mousePosition.setText("Mouse: (" + x + ", " + y + "), Hovering tile: (" + (x/30+1) + ", " + (y/30+1) + ")");
-	}
 	
 	/**
 	 * Update the whole interface.

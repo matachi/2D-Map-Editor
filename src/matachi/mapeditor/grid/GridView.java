@@ -42,26 +42,24 @@ public class GridView extends JPanel implements PropertyChangeListener {
 	/**
 	 * Creates a grid panel.
 	 * @param guiInformation Information from the GUI that the grid requires.
-	 * @param grid The grid that should be represented graphically in the GridView.
-	 * @param width The width of the GridView in number of tiles.
-	 * @param height The height of the GridView in number of tiles.
+	 * @param grid The camera that should be represented graphically in the GridView.
 	 * @param tiles List of available tiles.
 	 */
-	public GridView(GUIInformation guiInformation, Grid grid, final int width, final int height, List<? extends Tile> tiles) {
-		super(new GridLayout(height, width));
+	public GridView(GUIInformation guiInformation, Camera camera, List<? extends Tile> tiles) {
+		super(new GridLayout(camera.getHeight(), camera.getWidth()));
 		
 		this.tiles = tiles;
 		
-		this.camera = new GridCamera(grid, width, height);
+		this.camera = camera;
 		this.camera.addPropertyChangeListener(this);
 		GridController controller = new GridController(camera, guiInformation);
 		this.addMouseListener(controller);
 		this.addMouseMotionListener(controller);
 		
 		/** Add all tiles to the grid. */
-		map = new GridTile[height][width];
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
+		map = new GridTile[camera.getHeight()][camera.getWidth()];
+		for (int y = 0; y < camera.getHeight(); y++) {
+			for (int x = 0; x < camera.getWidth(); x++) {
 				map[y][x] = new GridTile(tiles.get(0));
 				map[y][x].addKeyListener(controller);
 				map[y][x].setFocusable(true);

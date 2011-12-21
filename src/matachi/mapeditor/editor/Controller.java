@@ -2,11 +2,6 @@ package matachi.mapeditor.editor;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.List;
@@ -25,7 +20,7 @@ import matachi.mapeditor.grid.GridModel;
  * @since v0.0.5
  *
  */
-public class Controller implements MouseListener, MouseMotionListener, ActionListener, KeyListener, GUIInformation {
+public class Controller implements ActionListener, GUIInformation {
 
 	/**
 	 * The GUI of the map editor.
@@ -49,41 +44,6 @@ public class Controller implements MouseListener, MouseMotionListener, ActionLis
 		this.model = new GridModel(42, 30);
 		this.view = new View(this, model, tiles);
 		this.model.addPropertyChangeListener(view);
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) { }
-
-	@Override
-	public void mouseEntered(MouseEvent e) { }
-
-	@Override
-	public void mouseExited(MouseEvent e) { }
-	
-	/**
-	 * If a mouse button is clicked.
-	 */
-	@Override
-	public void mousePressed(MouseEvent e) { }
-
-	@Override
-	public void mouseReleased(MouseEvent e) { }
-
-	/**
-	 * If the user keeps the mouse button pressed it will keep drawing if it is
-	 * in drawing mode, which it is by default.
-	 */
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		this.mousePressed(e);
-	}
-
-	/**
-	 * If the mouse cursor in moved.
-	 */
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		view.updateMousePosition(e.getX(), e.getY());
 	}
 
 	/**
@@ -126,16 +86,6 @@ public class Controller implements MouseListener, MouseMotionListener, ActionLis
 			}
 		} while (true);
 	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) { }
-	
-	@Override
-	public void keyTyped(KeyEvent e) { }
 
 	/**
 	 * {@inheritDoc}
