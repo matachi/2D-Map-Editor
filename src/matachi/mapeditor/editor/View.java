@@ -34,7 +34,7 @@ public class View {
 	/**
 	 * Settings to the right.
 	 */
-	private JButton showGridButton;
+//	private JButton showGridButton;
 	
 //	private boolean showingGrid;
 	
@@ -64,9 +64,9 @@ public class View {
 		}
 		
 		/** Create the right panel. */
-		showGridButton = new JButton("Hide grid");
-		showGridButton.addActionListener(controller);
-		showGridButton.setActionCommand("flipGrid");
+//		showGridButton = new JButton("Hide grid");
+//		showGridButton.addActionListener(controller);
+//		showGridButton.setActionCommand("flipGrid");
 		
 		JButton saveButton = new JButton("Save");
 		saveButton.addActionListener(controller);
@@ -76,7 +76,7 @@ public class View {
 		right.setLayout(new BoxLayout(right, BoxLayout.Y_AXIS));
 		Border border = BorderFactory.createEmptyBorder(10, 10, 10, 10);
 		right.setBorder(border);
-		right.add(showGridButton);
+//		right.add(showGridButton);
 		right.add(saveButton);
 		
 		/** The top panel, that shows coordinates and stuff. */
