@@ -36,7 +36,8 @@ public class Controller implements ActionListener, GUIInformation {
 	 */
 	public Controller() {
 		this.tiles = TileManager.getTilesFromFolder("data/");
-		this.model = new GridModel(Constants.MAP_WIDTH, Constants.MAP_HEIGHT);
+		this.model = new GridModel(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, tiles.get(0).getCharacter());
+		System.out.println(tiles.get(0).getCharacter());
 		new View(this, model, tiles);
 	}
 

@@ -24,6 +24,11 @@ public class GridModel implements Grid {
 	private char[][] map;
 	
 	/**
+	 * Default character.
+	 */
+	private char defaultChar;
+	
+	/**
 	 * Announce changes.
 	 */
 	private PropertyChangeSupport changeSupport;
@@ -32,10 +37,13 @@ public class GridModel implements Grid {
 	 * Constructs the model with number of rows and columns.
 	 * @param cols The number of columns.
 	 * @param rows The number of rows.
+	 * @param defaultChar The character that the map should be filled with by
+	 * default.
 	 */
-	public GridModel(int columns, int rows) {
-		changeSupport = new PropertyChangeSupport(this);
-		map = createEmptyMap(columns, rows);
+	public GridModel(int columns, int rows, char defaultChar) {
+		this.defaultChar = defaultChar;
+		this.changeSupport = new PropertyChangeSupport(this);
+		this.map = createEmptyMap(columns, rows);
 	}
 
 	/**
@@ -147,11 +155,11 @@ public class GridModel implements Grid {
 	 * Returns a new map filled with zeros.
 	 * @param columns The number of columns.
 	 * @param rows The number of rows.
-	 * @return char[][] A 2D array of characters (zeros).
+	 * @return char[][] A 2D array of default characters.
 	 */
 	private char[][] createEmptyMap(int columns, int rows) {
 		char[][] tmpMap = new char[rows][columns];
-		fillMap(tmpMap, '0');
+		fillMap(tmpMap, defaultChar);
 		return tmpMap;
 	}
 	

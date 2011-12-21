@@ -1,6 +1,5 @@
 package matachi.mapeditor.grid;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Point;
@@ -143,8 +142,8 @@ public class GridView extends JPanel implements PropertyChangeListener {
 		@Override
 		public void paintComponent(Graphics g) {
 			g.drawImage(tile.getImage(), 0, 0, null);
-			g.setColor(Color.DARK_GRAY);
-			g.drawRect(0, 0, Constants.TILE_WIDTH, Constants.TILE_HEIGHT);
+//			g.setColor(Color.DARK_GRAY);
+//			g.drawRect(0, 0, Constants.TILE_WIDTH, Constants.TILE_HEIGHT);
 //			if (showingGrid) {
 //				g.drawRect(0, 0, 30, 30);
 //			}

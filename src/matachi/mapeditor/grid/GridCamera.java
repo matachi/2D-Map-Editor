@@ -36,9 +36,10 @@ public class GridCamera implements Camera {
 	 * @param rows The number of rows.
 	 * @param cameraWidth The width of the camera.
 	 * @param cameraHeight The height of the camera.
+	 * @param defaultChar The character that the map should be filled with.
 	 */
-	public GridCamera(int cols, int rows, int cameraWidth, int cameraHeight) {
-		this(cols, rows, cameraWidth, cameraHeight, 0, 0);
+	public GridCamera(int cols, int rows, int cameraWidth, int cameraHeight, char defaultChar) {
+		this(cols, rows, cameraWidth, cameraHeight, 0, 0, defaultChar);
 	}
 
 	/**
@@ -50,11 +51,12 @@ public class GridCamera implements Camera {
 	 * @param cameraHeight The height of the camera.
 	 * @param cameraX The X coordinate of the camera.
 	 * @param cameraY The Y coordinate of the camera.
+	 * @param defaultChar The character that the map should be filled with.
 	 */
-	public GridCamera(int cols, int rows, int cameraWidth, int cameraHeight, int cameraX, int cameraY) {
+	public GridCamera(int cols, int rows, int cameraWidth, int cameraHeight, int cameraX, int cameraY, char defaultChar) {
 		checkValidCameraPosition(cols, rows, cameraWidth, cameraHeight, cameraX, cameraY);
 		this.changeSupport = new PropertyChangeSupport(this);
-		this.model = new GridModel(cols, rows);
+		this.model = new GridModel(cols, rows, defaultChar);
 		this.camera = new Rectangle(cameraX, cameraY, cameraWidth, cameraHeight);
 	}
 
@@ -78,7 +80,6 @@ public class GridCamera implements Camera {
 	 * @param cameraY The Y coordinate of the camera.
 	 */
 	public GridCamera(Grid model, int cameraWidth, int cameraHeight, int cameraX, int cameraY) {
-//		this(model.getWidth(), model.getHeight(), cameraWidth, cameraHeight, cameraX, cameraY);
 		checkValidCameraPosition(model.getWidth(), model.getHeight(), cameraWidth, cameraHeight, cameraX, cameraY);
 		this.changeSupport = new PropertyChangeSupport(this);
 		this.model = model;

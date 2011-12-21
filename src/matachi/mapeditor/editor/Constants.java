@@ -17,7 +17,7 @@ public class Constants {
 
 	public static final int GRID_HEIGHT = 20;
 
-	public static final int TILE_WIDTH = 30;
+	public static final int TILE_WIDTH = 32;
 
 	public static final int TILE_HEIGHT = TILE_WIDTH;
 
