@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import matachi.mapeditor.editor.Constants;
 import matachi.mapeditor.editor.GUIInformation;
 
 /**
@@ -66,8 +67,8 @@ public class GridController implements MouseListener, MouseMotionListener, Actio
 	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
-		lastClickedTileX = e.getX() / 30;
-		lastClickedTileY = e.getY() / 30;
+		lastClickedTileX = e.getX() / Constants.TILE_WIDTH;
+		lastClickedTileY = e.getY() / Constants.TILE_HEIGHT;
 		if (ifLeftMouseButtonPressed(e)) {
 			updateTile(lastClickedTileX, lastClickedTileY);
 		}
@@ -82,7 +83,11 @@ public class GridController implements MouseListener, MouseMotionListener, Actio
 	}
 	
 	private void updateTile(int xCor, int yCor) {
-		camera.setTile(xCor, yCor, guiInformation.getSelectedTile().getCharacter());
+		xCor = Math.max(0, Math.min(xCor, Constants.GRID_WIDTH-1));
+		yCor = Math.max(0, Math.min(yCor, Constants.GRID_HEIGHT-1));
+		if (guiInformation.getSelectedTile() != null) {
+			camera.setTile(xCor, yCor, guiInformation.getSelectedTile().getCharacter());
+		}
 	}
 
 	private void updateCamera(int newTileX, int newTileY) {
@@ -114,8 +119,8 @@ public class GridController implements MouseListener, MouseMotionListener, Actio
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		if (ifRightMouseButtonPressed(e)) {
-			int newTileX = e.getX() / 30;
-			int newTileY = e.getY() / 30;
+			int newTileX = e.getX() / Constants.TILE_WIDTH;
+			int newTileY = e.getY() / Constants.TILE_HEIGHT;
 			updateCamera(newTileX, newTileY);
 		}
 		this.mousePressed(e);

@@ -3,6 +3,8 @@ package matachi.mapeditor.editor;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * This class supports the Tile list with methods.
@@ -27,7 +29,13 @@ public class TileManager {
 		
 		int character = 48;
 		
+		Map<String, File> map = new TreeMap<String, File>();
+
 		for (File f : listOfFiles) {
+			map.put(f.getName(), f);
+		}
+		
+		for (File f : map.values()) {
 			tiles.add(new Tile(f.getPath(), (char)character++));
 		}
 		

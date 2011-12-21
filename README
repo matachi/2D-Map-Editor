@@ -1,5 +1,33 @@
 A map editor written in Java for 2D games. It's meant to be used to generate
 text files with characters building up a tile based 2D game.
 
+
+How to use the application
+
+	Select which tile that should be painted from the palette from the bottom of
+	the application.
+	Moving the mouse holding down the left mouse button will paint the selected
+	tile.
+	Holding gown the right mouse button instead will move the camera.
+	Using the arrow keys will also move the camera.
+	
+	
+How to add additional tiles to the application
+
+	Put your additional image files into the data folder and restart the
+	application. Then they should appear by themselves in the app.
+
+
+How to compile and run the application
+
+	Compile:
+	1.  $ cd "2D Map Editor"/
+	2.  2D Map Editor $ mkdir bin
+	3.  2D Map Editor $ javac -sourcepath src -d bin src/matachi/mapeditor/Main.java
+	
+	Run:
+	1.  2D Map Editor $ java -classpath bin matachi.mapeditor.Main
+
+
 Author: Daniel "MaTachi" Jonsson
 Date: 3 December 2011
