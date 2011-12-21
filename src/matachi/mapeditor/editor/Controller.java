@@ -35,11 +35,6 @@ public class Controller implements MouseListener, MouseMotionListener, ActionLis
 	private List<Tile> tiles;
 	
 	/**
-	 * If the drawingMode is on or off.
-	 */
-	private boolean drawingMode;
-	
-	/**
 	 * Construct the controller.
 	 */
 	public Controller() {
@@ -47,7 +42,6 @@ public class Controller implements MouseListener, MouseMotionListener, ActionLis
 		this.model = new GridModel(42, 30);
 		this.view = new View(this, model, tiles);
 		this.model.addPropertyChangeListener(view);
-		this.drawingMode = true;
 	}
 
 	@Override
@@ -74,9 +68,7 @@ public class Controller implements MouseListener, MouseMotionListener, ActionLis
 	 */
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		if (drawingMode) {
-			this.mousePressed(e);
-		}
+		this.mousePressed(e);
 	}
 
 	/**
@@ -100,9 +92,6 @@ public class Controller implements MouseListener, MouseMotionListener, ActionLis
 		}
 		if (e.getActionCommand().equals("flipGrid")) {
 //			view.flipGrid();
-		} else if (e.getActionCommand().equals("flipDraw")) {
-			drawingMode = !drawingMode;
-			view.flipDraw();
 		} else if (e.getActionCommand().equals("save")) {
 			saveFile();
 		}

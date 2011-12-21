@@ -118,9 +118,7 @@ public class GridController implements MouseListener, MouseMotionListener, Actio
 			int newTileY = e.getY() / 30;
 			updateCamera(newTileX, newTileY);
 		}
-//		else if (drawingMode) {
-//			this.mousePressed(e);
-//		}
+		this.mousePressed(e);
 	}
 
 	/**

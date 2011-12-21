@@ -29,10 +29,8 @@ public class View implements PropertyChangeListener {
 	 * Settings to the right.
 	 */
 	private JButton showGridButton;
-	private JButton drawModeButton;
 	
 	private boolean showingGrid;
-	private boolean drawingMode;
 
 	private JLabel viewInformation;
 	private JLabel mousePosition;
@@ -44,7 +42,6 @@ public class View implements PropertyChangeListener {
 	 */
 	public View(Controller controller, Grid gridModel, List<? extends Tile> tiles) {
 		
-		drawingMode = true;
 		showingGrid = true;
 		
 		JPanel grid = new GridView(controller, gridModel, 32, 20, tiles); // Every tile is 30x30 pixels
@@ -67,11 +64,6 @@ public class View implements PropertyChangeListener {
 		showGridButton = new JButton("Hide grid");
 		showGridButton.addActionListener(controller);
 		showGridButton.setActionCommand("flipGrid");
-
-		drawModeButton = new JButton("Draw mode OFF");
-		drawModeButton.setPreferredSize(new Dimension(200, 20));
-		drawModeButton.addActionListener(controller);
-		drawModeButton.setActionCommand("flipDraw");
 		
 		JButton saveButton = new JButton("Save");
 		saveButton.addActionListener(controller);
@@ -82,7 +74,6 @@ public class View implements PropertyChangeListener {
 		Border border = BorderFactory.createEmptyBorder(10, 10, 10, 10);
 		right.setBorder(border);
 		right.add(showGridButton);
-		right.add(drawModeButton);
 		right.add(saveButton);
 		
 		/** The top panel, that shows coordinates and stuff. */
@@ -139,18 +130,6 @@ public class View implements PropertyChangeListener {
 //		}
 //		frame.repaint();
 //	}
-	
-	/**
-	 * Change the button that indicates if the drawing mode is on or off.
-	 */
-	public void flipDraw() {
-		this.drawingMode = !this.drawingMode;
-		if (!drawingMode) {
-			drawModeButton.setText("Draw mode ON");
-		} else {
-			drawModeButton.setText("Draw mode OFF");
-		}
-	}
 	
 	public void updateMousePosition(int x, int y) {
 		mousePosition.setText("Mouse: (" + x + ", " + y + "), Hovering tile: (" + (x/30+1) + ", " + (y/30+1) + ")");
