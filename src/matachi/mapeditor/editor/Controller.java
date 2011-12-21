@@ -23,11 +23,6 @@ import matachi.mapeditor.grid.GridModel;
 public class Controller implements ActionListener, GUIInformation {
 
 	/**
-	 * The GUI of the map editor.
-	 */
-	private final View view;
-
-	/**
 	 * The model of the map editor.
 	 */
 	private Grid model;
@@ -41,9 +36,8 @@ public class Controller implements ActionListener, GUIInformation {
 	 */
 	public Controller() {
 		this.tiles = TileManager.getTilesFromFolder("data/");
-		this.model = new GridModel(42, 30);
-		this.view = new View(this, model, tiles);
-		this.model.addPropertyChangeListener(view);
+		this.model = new GridModel(Constants.MAP_WIDTH, Constants.MAP_HEIGHT);
+		new View(this, model, tiles);
 	}
 
 	/**

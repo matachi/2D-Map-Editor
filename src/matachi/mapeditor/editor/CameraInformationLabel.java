@@ -28,8 +28,10 @@ public class CameraInformationLabel extends JLabel implements PropertyChangeList
 	public CameraInformationLabel(Camera camera) {
 		this.camera = camera;
 		camera.addPropertyChangeListener(this);
-		
-		this.setText("Showing: 0 - 32/" + camera.getModelWidth() + ", 0 - 20/" + camera.getModelHeight());
+
+		this.setText("Showing: 0 - " + Constants.GRID_WIDTH + "/"
+				+ camera.getModelWidth() + ", 0 - " + Constants.GRID_HEIGHT
+				+ "/" + camera.getModelHeight());
 		this.setPreferredSize(new Dimension(220, 15));
 	}
 

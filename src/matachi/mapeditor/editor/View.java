@@ -3,8 +3,6 @@ package matachi.mapeditor.editor;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -26,7 +24,7 @@ import matachi.mapeditor.grid.GridView;
  * @since v0.0.5
  *
  */
-public class View implements PropertyChangeListener {
+public class View {
 	
 	/**
 	 * The JFrame.
@@ -49,16 +47,16 @@ public class View implements PropertyChangeListener {
 		
 //		showingGrid = true;
 		
-		Camera camera = new GridCamera(gridModel, 32, 20);
+		Camera camera = new GridCamera(gridModel, Constants.GRID_WIDTH, Constants.GRID_HEIGHT);
 		
 		JPanel grid = new GridView(controller, camera, tiles); // Every tile is 30x30 pixels
-		grid.setPreferredSize(new Dimension(960, 600));
+		grid.setPreferredSize(new Dimension(Constants.GRID_WIDTH * Constants.TILE_WIDTH, Constants.GRID_HEIGHT * Constants.TILE_HEIGHT));
 		
 		/** Create the bottom panel. */
 		JPanel palette = new JPanel(new FlowLayout());
 		for (Tile t : tiles) {
 			JButton button = new JButton();
-			button.setPreferredSize(new Dimension(30, 30));
+			button.setPreferredSize(new Dimension(Constants.TILE_WIDTH, Constants.TILE_HEIGHT));
 			button.setIcon(t.getIcon());
 			button.addActionListener(controller);
 			button.setActionCommand(Character.toString(t.getCharacter()));
@@ -82,13 +80,13 @@ public class View implements PropertyChangeListener {
 		right.add(saveButton);
 		
 		/** The top panel, that shows coordinates and stuff. */
-		CameraInformationLabel cameraInformation = new CameraInformationLabel(camera);
-		GridMouseInformationLabel mouseInformation = new GridMouseInformationLabel(grid);
+		CameraInformationLabel cameraInformationLabel = new CameraInformationLabel(camera);
+		GridMouseInformationLabel mouseInformationLabel = new GridMouseInformationLabel(grid);
 		JPanel top = new JPanel();
 		top.setLayout(new FlowLayout(FlowLayout.LEFT));
 		top.setBorder(border);
-		top.add(cameraInformation);
-		top.add(mouseInformation);
+		top.add(cameraInformationLabel);
+		top.add(mouseInformationLabel);
 		
 		
 		JPanel layout = new JPanel(new BorderLayout());
@@ -129,12 +127,4 @@ public class View implements PropertyChangeListener {
 //		}
 //		frame.repaint();
 //	}
-	
-	/**
-	 * Update the whole interface.
-	 */
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		//TODO
-	}
 }

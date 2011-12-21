@@ -45,7 +45,7 @@ public class GridMouseInformationLabel extends JLabel implements MouseMotionList
 	 * @param y The mouse's y coordiante.
 	 */
 	private void updateMousePosition(int x, int y) {
-		this.setText("Mouse: (" + x + ", " + y + "), Hovering tile: (" + (x/30+1) + ", " + (y/30+1) + ")");
+		this.setText("Mouse: (" + x + ", " + y + "), Hovering tile: (" + (x/Constants.TILE_WIDTH+1) + ", " + (y/Constants.TILE_HEIGHT+1) + ")");
 	}
 
 	
