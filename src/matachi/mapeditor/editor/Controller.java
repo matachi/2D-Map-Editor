@@ -9,17 +9,23 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import matachi.mapeditor.grid.Camera;
 import matachi.mapeditor.grid.Grid;
-import matachi.mapeditor.grid.GridCamera;
 import matachi.mapeditor.grid.GridModel;
 
-public class Controller implements MouseListener, MouseMotionListener, ActionListener, KeyListener {
+/**
+ * Controller of the application.
+ * @author Daniel "MaTachi" Jonsson
+ * @version 1
+ * @since v0.0.5
+ *
+ */
+public class Controller implements MouseListener, MouseMotionListener, ActionListener, KeyListener, GUIInformation {
 
 	/**
 	 * The GUI of the map editor.
@@ -30,34 +36,19 @@ public class Controller implements MouseListener, MouseMotionListener, ActionLis
 	 * The model of the map editor.
 	 */
 	private Grid model;
-
-	/**
-	 * The camera of the model.
-	 */
-	private Camera camera;
 	
-	/**
-	 * The current type of tile that the user is painting with.
-	 */
-	private int curTile;
-	private int curTileX;
-	private int curTileY;
+	private Tile selectedTile;
 	
-	/**
-	 * If the drawingMode is on or off.
-	 */
-	private boolean drawingMode;
+	private List<Tile> tiles;
 	
 	/**
 	 * Construct the controller.
 	 */
 	public Controller() {
+		this.tiles = TileManager.getTilesFromFolder("data/");
 		this.model = new GridModel(42, 30);
-		this.camera = new GridCamera(model, 32, 20);
-		this.view = new View(this, model);
-		this.camera.addPropertyChangeListener(view);
+		this.view = new View(this, model, tiles);
 		this.model.addPropertyChangeListener(view);
-		this.drawingMode = true;
 	}
 
 	@Override
@@ -73,49 +64,7 @@ public class Controller implements MouseListener, MouseMotionListener, ActionLis
 	 * If a mouse button is clicked.
 	 */
 	@Override
-	public void mousePressed(MouseEvent e) {
-		if (ifLeftMouseButtonPressed(e)) {
-			int xCor = e.getX() / 30;
-			int yCor = e.getY() / 30;
-			if (curTile == 0) {
-				if (camera.getTile(xCor, yCor) != '0') {
-					camera.setTile(xCor, yCor, '0');
-				}
-			} else if (curTile == 1) {
-				if (camera.getTile(xCor, yCor) != '1') {
-					camera.setTile(xCor, yCor, '1');
-				}
-			}
-			mouseMoved(e);
-		} else if (ifRightMouseButtonPressed(e)) {
-			int newTileX = e.getX() / 30;
-			int newTileY = e.getY() / 30;
-			if (newTileX != curTileX) {
-				if (newTileX - curTileX > 0) {
-					camera.moveCamera(GridCamera.WEST);
-				} else {
-					camera.moveCamera(GridCamera.EAST);
-				}
-			}
-			if (newTileY != curTileY) {
-				if (newTileY - curTileY > 0) {
-					camera.moveCamera(GridCamera.NORTH);
-				} else {
-					camera.moveCamera(GridCamera.SOUTH);
-				}
-			}
-			curTileX = newTileX;
-			curTileY = newTileY;
-		}
-	}
-	
-	private boolean ifLeftMouseButtonPressed(MouseEvent e) {
-		return (e.getModifiers() & MouseEvent.BUTTON1_MASK) == MouseEvent.BUTTON1_MASK;
-	}
-	
-	private boolean ifRightMouseButtonPressed(MouseEvent e) {
-		return (e.getModifiers() & MouseEvent.BUTTON3_MASK) == MouseEvent.BUTTON3_MASK;
-	}
+	public void mousePressed(MouseEvent e) { }
 
 	@Override
 	public void mouseReleased(MouseEvent e) { }
@@ -126,9 +75,7 @@ public class Controller implements MouseListener, MouseMotionListener, ActionLis
 	 */
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		if (drawingMode) {
-			this.mousePressed(e);
-		}
+		this.mousePressed(e);
 	}
 
 	/**
@@ -136,7 +83,7 @@ public class Controller implements MouseListener, MouseMotionListener, ActionLis
 	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		view.updateMousePosition(camera.getX() * 30 + e.getX(), camera.getY() * 30 + e.getY());
+		view.updateMousePosition(e.getX(), e.getY());
 	}
 
 	/**
@@ -144,15 +91,14 @@ public class Controller implements MouseListener, MouseMotionListener, ActionLis
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("sky")) {
-			curTile = 0;
-		} else if (e.getActionCommand().equals("ground")) {
-			curTile = 1;
-		} else if (e.getActionCommand().equals("flipGrid")) {
-			view.flipGrid();
-		} else if (e.getActionCommand().equals("flipDraw")) {
-			drawingMode = !drawingMode;
-			view.flipDraw();
+		for (Tile t : tiles) {
+			if (e.getActionCommand().equals(Character.toString(t.getCharacter()))) {
+				selectedTile = t;
+				break;
+			}
+		}
+		if (e.getActionCommand().equals("flipGrid")) {
+//			view.flipGrid();
 		} else if (e.getActionCommand().equals("save")) {
 			saveFile();
 		}
@@ -181,20 +127,8 @@ public class Controller implements MouseListener, MouseMotionListener, ActionLis
 		} while (true);
 	}
 
-	/**
-	 * If a key is pressed down.
-	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
-//		if (e.getKeyCode() == KeyEvent.VK_UP) {
-//			view.moveCamera(View.NORTH);
-//		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-//			view.moveCamera(View.EAST);
-//		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-//			view.moveCamera(View.SOUTH);
-//		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-//			view.moveCamera(View.WEST);
-//		}
 	}
 
 	@Override
@@ -202,4 +136,12 @@ public class Controller implements MouseListener, MouseMotionListener, ActionLis
 	
 	@Override
 	public void keyTyped(KeyEvent e) { }
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Tile getSelectedTile() {
+		return selectedTile;
+	}
 }

@@ -5,6 +5,14 @@ import java.awt.Rectangle;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+/**
+ * An implementation of the interface Camera. It has a Grid and shows only a
+ * rectangle of it.
+ * @author Daniel "MaTachi" Jonsson
+ * @version 1
+ * @since v0.0.5
+ *
+ */
 public class GridCamera implements Camera {
 
 	public static final int NORTH = 0;
@@ -12,7 +20,7 @@ public class GridCamera implements Camera {
 	public static final int SOUTH = 2;
 	public static final int WEST = 3;
 	
-	private GridModel model;
+	private Grid model;
 	
 	private Rectangle camera;
 
@@ -70,7 +78,11 @@ public class GridCamera implements Camera {
 	 * @param cameraY The Y coordinate of the camera.
 	 */
 	public GridCamera(Grid model, int cameraWidth, int cameraHeight, int cameraX, int cameraY) {
-		this(model.getWidth(), model.getHeight(), cameraWidth, cameraHeight, cameraX, cameraY);
+//		this(model.getWidth(), model.getHeight(), cameraWidth, cameraHeight, cameraX, cameraY);
+		checkValidCameraPosition(model.getWidth(), model.getHeight(), cameraWidth, cameraHeight, cameraX, cameraY);
+		this.changeSupport = new PropertyChangeSupport(this);
+		this.model = model;
+		this.camera = new Rectangle(cameraX, cameraY, cameraWidth, cameraHeight);
 	}
 
 	private void checkValidCameraPosition(int cols, int rows, int cameraWidth, int cameraHeight, int cameraX, int cameraY) {

@@ -1,35 +1,36 @@
 package matachi.mapeditor.editor;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
-import javax.imageio.ImageIO;
-
+/**
+ * This class supports the Tile list with methods.
+ * @author Daniel "MaTachi" Jonsson
+ * @version 1
+ * @since v0.0.5
+ *
+ */
 public class TileManager {
 
-	ArrayList<Tile> tiles;
-
 	/**
-	 * The image files to the tiles.
+	 * Returns a list with Tiles, constructed with images from the given folderPath.
+	 * @param folderPath Path to image folder.
+	 * @return List<Tile> List of tiles.
 	 */
-	private BufferedImage groundImage = null;
-	private BufferedImage skyImage = null;
-	
-	
-	public TileManager() {
-		tiles = new ArrayList<Tile>();
+	public static List<Tile> getTilesFromFolder(final String folderPath) {
+		
+		List<Tile> tiles = new ArrayList<Tile>();
 
-		/** Initialize the image icons. */
-		try {
-			groundImage = ImageIO.read(new File("data/groundIcon.png"));
-			skyImage = ImageIO.read(new File("data/skyIcon.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
+		File folder = new File(folderPath);
+		File[] listOfFiles = folder.listFiles();
+		
+		int character = 48;
+		
+		for (File f : listOfFiles) {
+			tiles.add(new Tile(f.getPath(), (char)character++));
 		}
-
-		tiles.add(new Tile(skyImage, '0'));
-		tiles.add(new Tile(groundImage, '1'));
+		
+		return tiles;
 	}
 }

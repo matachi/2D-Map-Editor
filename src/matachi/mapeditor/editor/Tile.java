@@ -1,11 +1,24 @@
 package matachi.mapeditor.editor;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
+import java.io.File;
+import java.io.IOException;
 
-import javax.swing.JPanel;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
+/**
+ * A class that holds a image, and a character that will be written to the
+ * map file.
+ * @author Daniel "MaTachi" Jonsson
+ * @version 1
+ * @since v0.0.5
+ *
+ */
 public class Tile {
 
 	/**
@@ -14,87 +27,56 @@ public class Tile {
 	private char character;
 
 	/**
-	 * The icon that will be used in the editor.
+	 * The image that will be used in the editor.
 	 */
-	private Icon icon;
+	private BufferedImage image;
 	
 	/**
 	 * Construct a tile.
-	 * @param icon The icon of the tile.
+	 * @param filePath The path to the file.
 	 * @param character The character that will represent the tile when saved.
 	 */
-	public Tile(BufferedImage icon, char character) {
-		this.icon = new Icon(icon);
-		this.setCharacter(character);
-	}
-
-	public JPanel getIcon() {
-//		return (JPanel) icon.clone();
-		return icon;
-	}
-	
-	/**
-	 * Change the icon.
-	 * @param icon The new icon.
-	 */
-	public void setIcon(BufferedImage icon) {
-		this.icon.icon = icon;
-		this.icon.repaint();
-	}
-
-	public void flipGrid() {
-		this.icon.showingGrid = !this.icon.showingGrid;
-		this.icon.repaint();
-	}
-	
-	public char getCharacter() {
-		return character;
-	}
-
-	public void setCharacter(char character) {
+	public Tile(final String filePath, final char character) {
+		try {
+			image = ImageIO.read(new File(filePath));
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.err.println(e.getMessage());
+			System.err.println("Bad file path: " + filePath);
+			System.exit(0);
+		}
 		this.character = character;
 	}
 
 	/**
-	 * The tile that will be used in the editor.
+	 * Get the tile as a image.
+	 * @return Image The tile icon.
 	 */
-	private class Icon extends JPanel implements Cloneable {
+	public Image getImage() {
+		return deepCopy(image);
+	}
 
-		/**
-		 * Serial something...
-		 */
-		private static final long serialVersionUID = 8886201740414079843L;
 
-		/**
-		 * The icon that will be used in the editor.
-		 */
-		private BufferedImage icon;
-
-		private boolean showingGrid = true;
-		
-		/**
-		 * Construct the icon.
-		 * @param icon
-		 */
-		public Icon(BufferedImage icon) {
-			this.icon = icon;
-		}
-		
-		@Override
-		public void paintComponent(Graphics g) {
-			g.drawImage(icon, 0, 0, null);
-			g.setColor(Color.DARK_GRAY);
-			if (showingGrid) {
-				g.drawRect(0, 0, 30, 30);
-			}
-		}
-		
-		public Object clone() {
-			try {
-				return super.clone();
-			} catch (CloneNotSupportedException e) {
-				return null;
-			}
-		}
+	/**
+	 * Get the tile as a icon.
+	 * @return Icon The tile icon.
+	 */
+	public Icon getIcon() {
+		return new ImageIcon(image);
+	}
+	
+	/**
+	 * Get the character.
+	 * @return char The tile character.
+	 */
+	public char getCharacter() {
+		return character;
+	}
+	
+	private static BufferedImage deepCopy(BufferedImage bi) {
+		ColorModel cm = bi.getColorModel();
+		boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+		WritableRaster raster = bi.copyData(null);
+		return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
 	}
 }

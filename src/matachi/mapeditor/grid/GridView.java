@@ -1,18 +1,25 @@
 package matachi.mapeditor.grid;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Point;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.io.IOException;
+import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import matachi.mapeditor.editor.GUIInformation;
 import matachi.mapeditor.editor.Tile;
 
+/**
+ * A class which shows a Grid graphically as a JPanel.
+ * @author Daniel "MaTachi" Jonsson
+ * @version 1
+ * @since v0.0.5
+ *
+ */
 public class GridView extends JPanel implements PropertyChangeListener {
 
 	private static final long serialVersionUID = -345930170664066299L;
@@ -25,43 +32,40 @@ public class GridView extends JPanel implements PropertyChangeListener {
 	/**
 	 * References to all tiles.
 	 */
-	private Tile[][] map;
+	private GridTile[][] map;
 	
 	/**
-	 * The image files to the tiles.
+	 * Available tiles.
 	 */
-	private BufferedImage groundImage = null;
-	private BufferedImage skyImage = null;
+	private List<? extends Tile> tiles;
 	
 	/**
-	 * 
-	 * @param controller
-	 * @param camera
+	 * Creates a grid panel.
+	 * @param guiInformation Information from the GUI that the grid requires.
+	 * @param grid The grid that should be represented graphically in the GridView.
+	 * @param width The width of the GridView in number of tiles.
+	 * @param height The height of the GridView in number of tiles.
+	 * @param tiles List of available tiles.
 	 */
-	public GridView(Grid grid, final int x, final int y) {
-		super(new GridLayout(y, x));
+	public GridView(GUIInformation guiInformation, Grid grid, final int width, final int height, List<? extends Tile> tiles) {
+		super(new GridLayout(height, width));
 		
-		this.camera = new GridCamera(grid, x, y);
-		GridController controller = new GridController(this, grid, camera);
+		this.tiles = tiles;
+		
+		this.camera = new GridCamera(grid, width, height);
+		this.camera.addPropertyChangeListener(this);
+		GridController controller = new GridController(camera, guiInformation);
 		this.addMouseListener(controller);
 		this.addMouseMotionListener(controller);
 		
-		/** Initialize the image icons. */
-		try {
-			groundImage = ImageIO.read(new File("data/groundIcon.png"));
-			skyImage = ImageIO.read(new File("data/skyIcon.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
 		/** Add all tiles to the grid. */
-		map = new Tile[y][x];
-		for (int y_ = 0; y_ < y; y_++) {
-			for (int x_ = 0; x_ < x; x_++) {
-				map[y_][x_] = new Tile(skyImage, '0');
-				map[y_][x_].getIcon().addKeyListener(controller);
-				map[y_][x_].getIcon().setFocusable(true);
-				this.add(map[y_][x_].getIcon());
+		map = new GridTile[height][width];
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				map[y][x] = new GridTile(tiles.get(0));
+				map[y][x].addKeyListener(controller);
+				map[y][x].setFocusable(true);
+				this.add(map[y][x]);
 			}
 		}
 	}
@@ -78,26 +82,73 @@ public class GridView extends JPanel implements PropertyChangeListener {
 		}
 	}
 	
+	/**
+	 * Redraw the whole grid.
+	 */
 	private void redrawGrid() {
 		for (int y = 0; y < 20; y++) {
 			for (int x = 0; x < 32; x++) {
-				if (camera.getTile(x, y) == '0') {
-					map[y][x].setIcon(skyImage);
-				} else if (camera.getTile(x, y) == '1') {
-					map[y][x].setIcon(groundImage);
+				for (Tile t : tiles) {
+					if (camera.getTile(x, y) == t.getCharacter()) {
+						map[y][x].setTile(t);
+						map[y][x].grabFocus();
+					}
 				}
-				map[y][x].getIcon().grabFocus();
 			}
 		}
 		this.repaint();
-//		frame.pack();
 	}
 	
-	private void redrawTile(Point p) {
-		if (camera.getTile(p.x, p.y) == '0') {
-			map[p.y][p.x].setIcon(skyImage);
-		} else if (camera.getTile(p.x, p.y) == '1') {
-			map[p.y][p.x].setIcon(groundImage);
+	/**
+	 * Redraw a single tile.
+	 * @param position The tile's position in the grid.
+	 */
+	private void redrawTile(Point position) {
+		for (Tile t : tiles) {
+			if (camera.getTile(position.x, position.y) == t.getCharacter()) {
+				map[position.y][position.x].setTile(t);
+			}
+		}
+	}
+	
+	/**
+	 * How the tiles are represented graphically.
+	 */
+	private class GridTile extends JPanel {
+		
+		private static final long serialVersionUID = 8127828009105626334L;
+		
+		/**
+		 * The tile that the GridTile should show.
+		 */
+		private Tile tile;
+		
+		/**
+		 * Construct a tile.
+		 * @param icon The icon of the tile.
+		 * @param character The character that will represent the tile when saved.
+		 */
+		public GridTile(Tile tile) {
+			this.tile = tile;
+		}
+
+		/**
+		 * Give the JPanel GridTile a new tile that it should show.
+		 * @param tile
+		 */
+		public void setTile(Tile tile) {
+			this.tile = tile;
+			this.repaint();
+		}
+
+		@Override
+		public void paintComponent(Graphics g) {
+			g.drawImage(tile.getImage(), 0, 0, null);
+			g.setColor(Color.DARK_GRAY);
+			g.drawRect(0, 0, 30, 30);
+//			if (showingGrid) {
+//				g.drawRect(0, 0, 30, 30);
+//			}
 		}
 	}
 }

@@ -8,45 +8,48 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import matachi.mapeditor.editor.GUIInformation;
+
+/**
+ * Takes inputs from the GridView and communicated with a Camera.
+ * @author Daniel "MaTachi" Jonsson
+ * @version 1
+ * @since v0.0.5
+ *
+ */
 public class GridController implements MouseListener, MouseMotionListener, ActionListener, KeyListener {
-	
-	/**
-	 * The GUI of the map editor.
-	 */
-	private final GridView view;
 
 	/**
-	 * The model of the map editor.
-	 */
-	private Grid model;
-
-	/**
-	 * The camera of the model.
+	 * The camera of the grid.
 	 */
 	private Camera camera;
 	
 	/**
-	 * The current type of tile that the user is painting with.
+	 * The last tile that the user clicked.
 	 */
-	private int curTile;
-	private int curTileX;
-	private int curTileY;
+	private int lastClickedTileX;
+	private int lastClickedTileY;
 	
 	/**
-	 * If the drawingMode is on or off.
+	 * The class that provides with GUI information.
 	 */
-	private boolean drawingMode;
+	private GUIInformation guiInformation;
+	
+//	/**
+//	 * If the drawingMode is on or off.
+//	 */
+//	private boolean drawingMode;
 
 	/**
-	 * Construct the controller.
+	 * The GridController which the GridView needs.
+	 * @param camera The camera which the GridController will command.
+	 * @param guiInformation The class that the GridController will query for
+	 * information.
 	 */
-	public GridController(GridView view, Grid grid, Camera camera) {
+	public GridController(Camera camera, GUIInformation guiInformation) {
 		this.camera = camera;
-		this.view = view;
-		this.model = grid;
-		this.camera.addPropertyChangeListener(view);
-		this.model.addPropertyChangeListener(view);
-		this.drawingMode = true;
+		this.guiInformation = guiInformation;
+//		this.drawingMode = true;
 	}
 
 	@Override
@@ -63,14 +66,10 @@ public class GridController implements MouseListener, MouseMotionListener, Actio
 	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
+		lastClickedTileX = e.getX() / 30;
+		lastClickedTileY = e.getY() / 30;
 		if (ifLeftMouseButtonPressed(e)) {
-			int xCor = e.getX() / 30;
-			int yCor = e.getY() / 30;
-			updateTile(xCor, yCor);
-		} else if (ifRightMouseButtonPressed(e)) {
-			int newTileX = e.getX() / 30;
-			int newTileY = e.getY() / 30;
-			updateCamera(newTileX, newTileY);
+			updateTile(lastClickedTileX, lastClickedTileY);
 		}
 	}
 
@@ -83,34 +82,26 @@ public class GridController implements MouseListener, MouseMotionListener, Actio
 	}
 	
 	private void updateTile(int xCor, int yCor) {
-		if (curTile == 0) {
-			if (camera.getTile(xCor, yCor) != '0') {
-				camera.setTile(xCor, yCor, '0');
-			}
-		} else if (curTile == 1) {
-			if (camera.getTile(xCor, yCor) != '1') {
-				camera.setTile(xCor, yCor, '1');
-			}
-		}
+		camera.setTile(xCor, yCor, guiInformation.getSelectedTile().getCharacter());
 	}
 
 	private void updateCamera(int newTileX, int newTileY) {
-		if (newTileX != curTileX) {
-			if (newTileX - curTileX > 0) {
+		if (newTileX != lastClickedTileX) {
+			if (newTileX - lastClickedTileX > 0) {
 				camera.moveCamera(GridCamera.WEST);
 			} else {
 				camera.moveCamera(GridCamera.EAST);
 			}
 		}
-		if (newTileY != curTileY) {
-			if (newTileY - curTileY > 0) {
+		if (newTileY != lastClickedTileY) {
+			if (newTileY - lastClickedTileY > 0) {
 				camera.moveCamera(GridCamera.NORTH);
 			} else {
 				camera.moveCamera(GridCamera.SOUTH);
 			}
 		}
-		curTileX = newTileX;
-		curTileY = newTileY;
+		lastClickedTileX = newTileX;
+		lastClickedTileY = newTileY;
 	}
 
 	@Override
@@ -122,9 +113,12 @@ public class GridController implements MouseListener, MouseMotionListener, Actio
 	 */
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		if (drawingMode) {
-			this.mousePressed(e);
+		if (ifRightMouseButtonPressed(e)) {
+			int newTileX = e.getX() / 30;
+			int newTileY = e.getY() / 30;
+			updateCamera(newTileX, newTileY);
 		}
+		this.mousePressed(e);
 	}
 
 	/**
@@ -134,22 +128,8 @@ public class GridController implements MouseListener, MouseMotionListener, Actio
 	public void mouseMoved(MouseEvent e) {
 	}
 
-	/**
-	 * Different commands that comes from the view.
-	 */
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("sky")) {
-			curTile = 0;
-		} else if (e.getActionCommand().equals("ground")) {
-			curTile = 1;
-		} else if (e.getActionCommand().equals("flipGrid")) {
-//			view.flipGrid();
-		} else if (e.getActionCommand().equals("flipDraw")) {
-			drawingMode = !drawingMode;
-//			view.flipDraw();
-		}
-	}
+	public void actionPerformed(ActionEvent e) { }
 
 	/**
 	 * If a key is pressed down.
