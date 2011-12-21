@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import matachi.mapeditor.editor.Constants;
 import matachi.mapeditor.editor.GUIInformation;
 
 /**
@@ -82,6 +83,8 @@ public class GridController implements MouseListener, MouseMotionListener, Actio
 	}
 	
 	private void updateTile(int xCor, int yCor) {
+		xCor = Math.min(xCor, Constants.VIEW_X-1);
+		yCor = Math.min(yCor, Constants.VIEW_Y-1);
 		camera.setTile(xCor, yCor, guiInformation.getSelectedTile().getCharacter());
 	}
 
