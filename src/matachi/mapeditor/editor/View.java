@@ -43,13 +43,11 @@ public class View {
 	 * @param controller The controller.
 	 * @param model The model.
 	 */
-	public View(Controller controller, Grid gridModel, List<? extends Tile> tiles) {
+	public View(Controller controller, Camera camera, JPanel grid, List<? extends Tile> tiles) {
 		
 //		showingGrid = true;
 		
-		Camera camera = new GridCamera(gridModel, Constants.GRID_WIDTH, Constants.GRID_HEIGHT);
 		
-		JPanel grid = new GridView(controller, camera, tiles); // Every tile is 30x30 pixels
 		grid.setPreferredSize(new Dimension(Constants.GRID_WIDTH * Constants.TILE_WIDTH, Constants.GRID_HEIGHT * Constants.TILE_HEIGHT));
 		
 		/** Create the bottom panel. */
@@ -72,12 +70,17 @@ public class View {
 		saveButton.addActionListener(controller);
 		saveButton.setActionCommand("save");
 		
+		JButton loadButton = new JButton("Load");
+		loadButton.addActionListener(controller);
+		loadButton.setActionCommand("load");
+		
 		JPanel right = new JPanel();
 		right.setLayout(new BoxLayout(right, BoxLayout.Y_AXIS));
 		Border border = BorderFactory.createEmptyBorder(10, 10, 10, 10);
 		right.setBorder(border);
 //		right.add(showGridButton);
 		right.add(saveButton);
+		right.add(loadButton);
 		
 		/** The top panel, that shows coordinates and stuff. */
 		CameraInformationLabel cameraInformationLabel = new CameraInformationLabel(camera);

@@ -83,7 +83,7 @@ public class GridView extends JPanel implements PropertyChangeListener {
 	/**
 	 * Redraw the whole grid.
 	 */
-	private void redrawGrid() {
+	public void redrawGrid() {
 		for (int y = 0; y < Constants.GRID_HEIGHT; y++) {
 			for (int x = 0; x < Constants.GRID_WIDTH; x++) {
 				for (Tile t : tiles) {
