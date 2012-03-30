@@ -10,6 +10,8 @@ import org.jdom.output.XMLOutputter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,6 +25,8 @@ import java.util.StringTokenizer;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import matachi.mapeditor.grid.Camera;
@@ -47,27 +51,36 @@ public class Controller implements ActionListener, GUIInformation {
 	private Grid model;
 
 	private Tile selectedTile;
+	private Camera camera;
 
 	private List<Tile> tiles;
 
 	private GridView grid;
+	private View view;
+
+	private int gridWith = Constants.MAP_WIDTH;
+	private int gridHeight = Constants.MAP_HEIGHT;
 
 	/**
 	 * Construct the controller.
 	 */
 	public Controller() {
+		init(Constants.MAP_WIDTH, Constants.MAP_HEIGHT);
+
+	}
+
+	public void init(int width, int height) {
 		this.tiles = TileManager.getTilesFromFolder("data/");
-		this.model = new GridModel(Constants.MAP_WIDTH, Constants.MAP_HEIGHT,
-				tiles.get(0).getCharacter());
+		this.model = new GridModel(width, height, tiles.get(0).getCharacter());
 		System.out.println(tiles.get(0).getCharacter());
 
-		Camera camera = new GridCamera(model, Constants.GRID_WIDTH,
+		this.camera = new GridCamera(model, Constants.GRID_WIDTH,
 				Constants.GRID_HEIGHT);
 
 		grid = new GridView(this, camera, tiles); // Every tile is
 													// 30x30 pixels
 
-		new View(this, camera, grid, tiles);
+		this.view = new View(this, camera, grid, tiles);
 	}
 
 	/**
@@ -88,8 +101,32 @@ public class Controller implements ActionListener, GUIInformation {
 			saveFile();
 		} else if (e.getActionCommand().equals("load")) {
 			loadFile();
+		} else if (e.getActionCommand().equals("update")) {
+			updateGrid(gridWith, gridHeight);
 		}
 	}
+
+	public void updateGrid(int width, int height) {
+		view.close();
+		init(width, height);
+		view.setSize(width, height);
+	}
+
+	DocumentListener updateSizeFields = new DocumentListener() {
+
+		public void changedUpdate(DocumentEvent e) {
+		}
+
+		public void removeUpdate(DocumentEvent e) {
+			gridWith = view.getWidth();
+			gridHeight = view.getHeight();
+		}
+
+		public void insertUpdate(DocumentEvent e) {
+			gridWith = view.getWidth();
+			gridHeight = view.getHeight();
+		}
+	};
 
 	// OLD
 	private void saveTEXTFile() {
@@ -137,11 +174,8 @@ public class Controller implements ActionListener, GUIInformation {
 				doc.getRootElement().addContent(size);
 
 				for (int y = 0; y < height; y++) {
+					Element row = new Element("row");
 					for (int x = 0; x < width; x++) {
-						Element tile = new Element("tile");
-						tile.addContent(new Element("x").setText(x + ""));
-						tile.addContent(new Element("y").setText(y + ""));
-
 						int tileNr = Character.getNumericValue(model.getTile(x,
 								y));
 						String type;
@@ -155,14 +189,11 @@ public class Controller implements ActionListener, GUIInformation {
 							type = "EndTile";
 						else
 							type = "AirTile";
-
-						tile.addContent(new Element("type").setText(type + ""));
-						doc.getRootElement().addContent(tile);
+						row.addContent(new Element("cell").setText(type));
 					}
+					doc.getRootElement().addContent(row);
 				}
-
 				XMLOutputter xmlOutput = new XMLOutputter();
-
 				xmlOutput.setFormat(Format.getPrettyFormat());
 				xmlOutput
 						.output(doc, new FileWriter(chooser.getSelectedFile()));
@@ -194,34 +225,36 @@ public class Controller implements ActionListener, GUIInformation {
 
 					Element rootNode = document.getRootElement();
 
-					// Size: TODO!!!!!
-					// List sizeList = rootNode.getChildren("size");
-					// Element sizeElem = (Element) sizeList.get(0);
-					// int height =
-					// Integer.parseInt(sizeElem.getChildText("height"));
-					// int width =
-					// Integer.parseInt(sizeElem.getChildText("width"));
-					// grid = new Tile[height][width];
+					List sizeList = rootNode.getChildren("size");
+					Element sizeElem = (Element) sizeList.get(0);
+					int height = Integer.parseInt(sizeElem
+							.getChildText("height"));
+					int width = Integer
+							.parseInt(sizeElem.getChildText("width"));
+					updateGrid(width, height);
 
-					List list = rootNode.getChildren("tile");
-					for (int i = 0; i < list.size(); i++) {
-						Element tileElem = (Element) list.get(i);
-						int x = Integer.parseInt(tileElem.getChildText("x"));
-						int y = Integer.parseInt(tileElem.getChildText("y"));
-						String tileType = tileElem.getChildText("type");
-						char tileNr;
-						if (tileType.equals("AirTile"))
-							tileNr = '0';
-						else if (tileType.equals("GroundTile"))
-							tileNr = '1';
-						else if (tileType.equals("SpawnTile"))
-							tileNr = '2';
-						else if (tileType.equals("EndTile"))
-							tileNr = '3';
-						else
-							tileNr = '0';
-						model.setTile(x, y, tileNr);
-						grid.redrawGrid();
+					List rows = rootNode.getChildren("row");
+					for (int y = 0; y < rows.size(); y++) {
+						Element cellsElem = (Element) rows.get(y);
+						List cells = cellsElem.getChildren("cell");
+
+						for (int x = 0; x < cells.size(); x++) {
+							Element cell = (Element) cells.get(x);
+							String cellValue = cell.getText();
+							char tileNr;
+							if (cellValue.equals("AirTile"))
+								tileNr = '0';
+							else if (cellValue.equals("GroundTile"))
+								tileNr = '1';
+							else if (cellValue.equals("SpawnTile"))
+								tileNr = '2';
+							else if (cellValue.equals("EndTile"))
+								tileNr = '3';
+							else
+								tileNr = '0';
+							model.setTile(x, y, tileNr);
+							grid.redrawGrid();
+						}
 					}
 				}
 			}
