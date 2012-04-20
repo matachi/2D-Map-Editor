@@ -178,6 +178,8 @@ public class Controller implements ActionListener, GUIInformation {
 					for (int x = 0; x < width; x++) {
 						int tileNr = Character.getNumericValue(model.getTile(x,
 								y));
+						String item = "";
+						String enemy = ""; 
 						String type;
 						if (tileNr == 0)
 							type = "AirTile";
@@ -187,9 +189,40 @@ public class Controller implements ActionListener, GUIInformation {
 							type = "SpawnTile";
 						else if (tileNr == 3)
 							type = "EndTile";
+						else if (tileNr == 4){
+							item = "healthPack";
+							type = "AirTile";
+						}
+						else if(tileNr == 5){
+							item = "laserPistol";
+							type = "AirTile";
+						}
+						else if(tileNr == 6){
+							item = "upgradePoints";
+							type = "AirTile";
+						}
+						else if(tileNr == 7){
+							enemy = "ballbot";
+							type = "AirTile";
+						}
+						else if(tileNr == 8){
+							enemy = "bucketbot";
+							type = "AirTile";
+						}
+						else if(tileNr == 9){
+							enemy = "tankbot";
+							type = "AirTile";
+						}
 						else
 							type = "AirTile";
-						row.addContent(new Element("cell").setText(type));
+						
+						Element e = new Element("cell");
+						if(!item.equals(""))
+							e.setAttribute(new Attribute("item",item));
+						if(!enemy.equals(""))
+							e.setAttribute(new Attribute("enemy",enemy));
+						
+						row.addContent(e.setText(type));
 					}
 					doc.getRootElement().addContent(row);
 				}
@@ -241,17 +274,41 @@ public class Controller implements ActionListener, GUIInformation {
 						for (int x = 0; x < cells.size(); x++) {
 							Element cell = (Element) cells.get(x);
 							String cellValue = cell.getText();
+							
+							
+							String item = cell.getAttributeValue("item");
+							String enemy = cell.getAttributeValue("enemy");
 							char tileNr;
-							if (cellValue.equals("AirTile"))
-								tileNr = '0';
-							else if (cellValue.equals("GroundTile"))
-								tileNr = '1';
-							else if (cellValue.equals("SpawnTile"))
-								tileNr = '2';
-							else if (cellValue.equals("EndTile"))
-								tileNr = '3';
-							else
-								tileNr = '0';
+							if(item != null){
+								if(item.equals("healthPack"))
+									tileNr = '4';
+								else if(item.equals("laserPistol"))
+									tileNr = '5';
+								else
+									tileNr = '6';
+							}
+							else if(enemy != null){
+								if(enemy.equals("ballbot"))
+									tileNr = '7';
+								else if(enemy.equals("bucketbot"))
+									tileNr = '8';
+								else
+									tileNr = '9';
+							}
+							else{
+								if (cellValue.equals("AirTile"))
+									tileNr = '0';
+								else if (cellValue.equals("GroundTile"))
+									tileNr = '1';
+								else if (cellValue.equals("SpawnTile"))
+									tileNr = '2';
+								else if (cellValue.equals("EndTile"))
+									tileNr = '3';
+								else if (cellValue.equals("EndTile"))
+									tileNr = '3';
+								else
+									tileNr = '0';
+							}
 							model.setTile(x, y, tileNr);
 							grid.redrawGrid();
 						}
