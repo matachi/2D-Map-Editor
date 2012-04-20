@@ -304,8 +304,6 @@ public class Controller implements ActionListener, GUIInformation {
 									tileNr = '2';
 								else if (cellValue.equals("EndTile"))
 									tileNr = '3';
-								else if (cellValue.equals("EndTile"))
-									tileNr = '3';
 								else
 									tileNr = '0';
 							}
