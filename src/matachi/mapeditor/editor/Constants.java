@@ -9,9 +9,9 @@ package matachi.mapeditor.editor;
  */
 public class Constants {
 	
-	public static final int MAP_WIDTH = 62;
+	public static final int MAP_WIDTH = 32;
 
-	public static final int MAP_HEIGHT = 50;
+	public static final int MAP_HEIGHT = 20;
 	
 	public static final int GRID_WIDTH = 32;
 
