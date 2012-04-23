@@ -208,6 +208,10 @@ public class Controller implements ActionListener, GUIInformation {
 							enemy = "tankbot";
 							type = "AirTile";
 						}
+						else if(tileNr == -1){ // MIGHT NEED TO BE FIXED!
+							item = "rocketLauncher";
+							type = "AirTile";
+						}
 						else
 							type = "AirTile";
 						
@@ -279,6 +283,8 @@ public class Controller implements ActionListener, GUIInformation {
 									tileNr = '4';
 								else if(item.equals("laserPistol"))
 									tileNr = '5';
+								else if(item.equals("rocketLauncher"))
+									tileNr = ':';
 								else
 									tileNr = '6';
 							}
