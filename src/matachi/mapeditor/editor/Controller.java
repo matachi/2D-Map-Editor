@@ -171,49 +171,35 @@ public class Controller implements ActionListener, GUIInformation {
 				for (int y = 0; y < height; y++) {
 					Element row = new Element("row");
 					for (int x = 0; x < width; x++) {
-						int tileNr = Character.getNumericValue(model.getTile(x,
-								y));
+						char tileChar = model.getTile(x,y);
+						System.out.println(model.getTile(x,y));
 						String item = "";
 						String enemy = ""; 
-						String type;
-						if (tileNr == 0)
-							type = "AirTile";
-						else if (tileNr == 1)
+						String type = "AirTile";
+						//if (tileChar == '0')
+						//	type = "AirTile";
+						if (tileChar == '1')
 							type = "GroundTile";
-						else if (tileNr == 2)
+						else if (tileChar == '2')
 							type = "SpawnTile";
-						else if (tileNr == 3)
+						else if (tileChar == '3')
 							type = "EndTile";
-						else if (tileNr == 4){
+						else if (tileChar == '4')
 							item = "healthPack";
-							type = "AirTile";
-						}
-						else if(tileNr == 5){
+						else if(tileChar == '5')
 							item = "laserPistol";
-							type = "AirTile";
-						}
-						else if(tileNr == 6){
+						else if(tileChar == '6')
 							item = "upgradePoints";
-							type = "AirTile";
-						}
-						else if(tileNr == 7){
+						else if(tileChar == '7')
 							enemy = "ballbot";
-							type = "AirTile";
-						}
-						else if(tileNr == 8){
+						else if(tileChar == '8')
 							enemy = "bucketbot";
-							type = "AirTile";
-						}
-						else if(tileNr == 9){
+						else if(tileChar == '9')
 							enemy = "tankbot";
-							type = "AirTile";
-						}
-						else if(tileNr == -1){ // MIGHT NEED TO BE FIXED!
+						else if(tileChar == ':')
 							item = "rocketLauncher";
-							type = "AirTile";
-						}
-						else
-							type = "AirTile";
+						else if(tileChar == ';')
+							item = "shotgun";
 						
 						Element e = new Element("cell");
 						if(!item.equals(""))
@@ -285,6 +271,8 @@ public class Controller implements ActionListener, GUIInformation {
 									tileNr = '5';
 								else if(item.equals("rocketLauncher"))
 									tileNr = ':';
+								else if(item.equals("shotgun"))
+									tileNr = ';';
 								else
 									tileNr = '6';
 							}
