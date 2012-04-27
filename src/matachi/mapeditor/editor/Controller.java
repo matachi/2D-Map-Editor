@@ -189,7 +189,7 @@ public class Controller implements ActionListener, GUIInformation {
 						else if(tileChar == '5')
 							item = "laserPistol";
 						else if(tileChar == '6')
-							item = "upgradePoints";
+							item = "upgradePoint";
 						else if(tileChar == '7')
 							enemy = "ballbot";
 						else if(tileChar == '8')
