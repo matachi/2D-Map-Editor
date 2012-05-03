@@ -200,6 +200,10 @@ public class Controller implements ActionListener, GUIInformation {
 							item = "rocketLauncher";
 						else if(tileChar == ';')
 							item = "shotgun";
+						else if(tileChar == '<')
+							enemy = "rocketbot";
+						else if(tileChar == '=')
+							enemy = "spikes";
 						
 						Element e = new Element("cell");
 						if(!item.equals(""))
@@ -281,6 +285,10 @@ public class Controller implements ActionListener, GUIInformation {
 									tileNr = '7';
 								else if(enemy.equals("bucketbot"))
 									tileNr = '8';
+								else if(enemy.equals("rocketbot"))
+									tileNr = '<';
+								else if(enemy.equals("spikes"))
+									tileNr = '=';
 								else
 									tileNr = '9';
 							}
