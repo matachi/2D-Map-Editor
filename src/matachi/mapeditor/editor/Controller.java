@@ -67,8 +67,6 @@ public class Controller implements ActionListener, GUIInformation {
 	public void init(int width, int height) {
 		this.tiles = TileManager.getTilesFromFolder("data/");
 		this.model = new GridModel(width, height, tiles.get(0).getCharacter());
-		System.out.println(tiles.get(0).getCharacter());
-
 		this.camera = new GridCamera(model, Constants.GRID_WIDTH,
 				Constants.GRID_HEIGHT);
 
@@ -172,39 +170,43 @@ public class Controller implements ActionListener, GUIInformation {
 					Element row = new Element("row");
 					for (int x = 0; x < width; x++) {
 						char tileChar = model.getTile(x,y);
-						System.out.println(model.getTile(x,y));
 						String item = "";
 						String enemy = ""; 
 						String type = "AirTile";
-						//if (tileChar == '0')
-						//	type = "AirTile";
+
 						if (tileChar == '1')
 							type = "GroundTile";
 						else if (tileChar == '2')
-							type = "SpawnTile";
+							type = "GroundTile2";
 						else if (tileChar == '3')
-							type = "EndTile";
+							type = "GroundTile3";
 						else if (tileChar == '4')
+							type = "GroundTile4";
+						else if (tileChar == '5')
+							type = "EndTile";
+						else if (tileChar == '6')
+							type = "SpawnTile";
+						else if (tileChar == '7')
 							item = "healthPack";
-						else if(tileChar == '5')
+						else if (tileChar == '8')
 							item = "laserPistol";
-						else if(tileChar == '6')
-							item = "upgradePoint";
-						else if(tileChar == '7')
-							enemy = "ballbot";
-						else if(tileChar == '8')
-							enemy = "bucketbot";
-						else if(tileChar == '9')
-							enemy = "tankbot";
-						else if(tileChar == ':')
+						else if (tileChar == '9')
 							item = "rocketLauncher";
-						else if(tileChar == ';')
+						else if(tileChar == ':')
 							item = "shotgun";
+						else if(tileChar == ';')
+							item = "upgradePoint";
 						else if(tileChar == '<')
-							enemy = "rocketbot";
+							enemy = "ballbot";
 						else if(tileChar == '=')
+							enemy = "bucketbot";
+						else if(tileChar == '>')
+							enemy = "rocketbot";
+						else if(tileChar == '?')
 							enemy = "spikes";
-						
+						else if(tileChar == '@')
+							enemy = "tankbot";
+
 						Element e = new Element("cell");
 						if(!item.equals(""))
 							e.setAttribute(new Attribute("item",item));
@@ -219,8 +221,6 @@ public class Controller implements ActionListener, GUIInformation {
 				xmlOutput.setFormat(Format.getPrettyFormat());
 				xmlOutput
 						.output(doc, new FileWriter(chooser.getSelectedFile()));
-
-				System.out.println("File Saved!");
 
 			}
 		} catch (FileNotFoundException e1) {
@@ -270,37 +270,43 @@ public class Controller implements ActionListener, GUIInformation {
 							char tileNr;
 							if(item != null){
 								if(item.equals("healthPack"))
-									tileNr = '4';
+									tileNr = '7';
 								else if(item.equals("laserPistol"))
-									tileNr = '5';
+									tileNr = '8';
 								else if(item.equals("rocketLauncher"))
-									tileNr = ':';
+									tileNr = '9';
 								else if(item.equals("shotgun"))
-									tileNr = ';';
+									tileNr = ':';
 								else
-									tileNr = '6';
+									tileNr = ';';
 							}
 							else if(enemy != null){
 								if(enemy.equals("ballbot"))
-									tileNr = '7';
-								else if(enemy.equals("bucketbot"))
-									tileNr = '8';
-								else if(enemy.equals("rocketbot"))
 									tileNr = '<';
-								else if(enemy.equals("spikes"))
+								else if(enemy.equals("bucketbot"))
 									tileNr = '=';
+								else if(enemy.equals("rocketbot"))
+									tileNr = '>';
+								else if(enemy.equals("spikes"))
+									tileNr = '?';
 								else
-									tileNr = '9';
+									tileNr = '@';
 							}
 							else{
 								if (cellValue.equals("AirTile"))
 									tileNr = '0';
 								else if (cellValue.equals("GroundTile"))
 									tileNr = '1';
-								else if (cellValue.equals("SpawnTile"))
+								else if (cellValue.equals("GroundTile2"))
 									tileNr = '2';
-								else if (cellValue.equals("EndTile"))
+								else if (cellValue.equals("GroundTile3"))
 									tileNr = '3';
+								else if (cellValue.equals("GroundTile4"))
+									tileNr = '4';
+								else if (cellValue.equals("EndTile"))
+									tileNr = '5';
+								else if (cellValue.equals("SpawnTile"))
+									tileNr = '6';
 								else
 									tileNr = '0';
 							}
@@ -334,7 +340,6 @@ public class Controller implements ActionListener, GUIInformation {
 			String line;
 			int y = 0;
 			while ((line = in.readLine()) != null) {
-				System.out.println(line);
 				for (int x = 0; x < line.length(); x++) {
 					char c = line.charAt(x);
 					model.setTile(x, y, c);
